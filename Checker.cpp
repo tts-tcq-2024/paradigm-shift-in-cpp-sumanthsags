@@ -8,10 +8,7 @@ bool batteryIsOk(float temperature, float soc, float chargeRate)
   {
     return false;
   } 
-  else
-  {
-    return true;
-  }
+  return true;
 }
 
 int main() 
