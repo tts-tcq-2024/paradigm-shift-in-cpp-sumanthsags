@@ -2,12 +2,13 @@
 #include <iostream>
 using namespace std;
 
+int isOutOfRange(float value, float lowerBound, float upperBound)
+{
+  return (value < lowerBound || value > upperBound);
+}
+
 bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
-  int isOutOfRange(float value, float lowerBound, float upperBound)
-  {
-    return (value < lowerBound || value > upperBound);
-  }
   int count = 0;
   count = isOutOfRange(temperature, 0, 45);
   count = isOutOfRange(soc, 20, 80);
