@@ -7,12 +7,18 @@ int isOutOfRange(float value, float lowerBound, float upperBound)
   return (value < lowerBound || value > upperBound);
 }
 
+int isGreaterThan(float value, float threshold)
+{
+  return (value > threshold);
+}
+
 bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
   int count = 0;
   count = count + isOutOfRange(temperature, 0, 45);
   count = count + isOutOfRange(soc, 20, 80);
-  cout << "count value :" << count;
+  count = count + isGreaterThan(chargeRate, 0.8);
+  cout << "count value :" << count << endl;
 
   if (count > 1)
   {
