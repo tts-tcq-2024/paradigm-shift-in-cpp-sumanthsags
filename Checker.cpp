@@ -10,8 +10,9 @@ int isOutOfRange(float value, float lowerBound, float upperBound)
 bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
   int count = 0;
-  count = isOutOfRange(temperature, 0, 45);
-  count = isOutOfRange(soc, 20, 80);
+  count = count + isOutOfRange(temperature, 0, 45);
+  count = count + isOutOfRange(soc, 20, 80);
+  cout << "count value :" << count;
 
   if (count > 1)
   {
