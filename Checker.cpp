@@ -6,7 +6,7 @@ bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
   int isOutOfRange(float value, float lowerBound, float upperBound)
   {
-  return (value < lowerBound || value > upperBound);
+    return (value < lowerBound || value > upperBound);
   }
   int count = 0;
   count = isOutOfRange(temperature, 0, 45);
