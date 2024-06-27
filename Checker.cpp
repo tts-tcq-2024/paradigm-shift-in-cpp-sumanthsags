@@ -4,11 +4,15 @@ using namespace std;
 
 bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
-  bool isBatteryOk = (temperature >= 0 && temperature <= 45);
-  isBatteryOk = (soc >= 20 && soc <= 80);
-  isBatteryOk = (chargeRate <= 0.8);
+  int isOutOfRange(float value, float lowerBound, float upperBound)
+  {
+  return (value < lowerBound || value > upperBound);
+  }
+  int count = 0;
+  count = isOutOfRange(temperature, 0, 45);
+  count = isOutOfRange(soc, 20, 80);
 
-  if (!isBatteryOk)
+  if (count > 1)
   {
     cout << "Battery not okay\n";
     return false;
