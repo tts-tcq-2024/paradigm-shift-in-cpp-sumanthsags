@@ -2,16 +2,15 @@
 #include <iostream>
 using namespace std;
 
-bool isOutOfRange(float value, float lowerBound, float upperBound)
+bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
-  return (value < lowerBound || value > upperBound);
-}
+  bool isBatteryOk = (temperature >= 0 && temperature <= 45);
+  isBatteryOk = (soc >= 20 && soc <= 80);
+  isBatteryOk = (chargeRate <= 0.8);
 
-bool batteryIsOk(float temperature) 
-{
-  if (isOutOfRange(temperature, 0, 45)) 
+  if (!isBatteryOk)
   {
-    cout << "Battery parameters out of range!\n";
+    cout << "Battery not okay\n";
     return false;
   }
   return true;
@@ -19,6 +18,6 @@ bool batteryIsOk(float temperature)
 
 int main()
 {
-  assert(batteryIsOk(25) == true);
-  assert(batteryIsOk(50) == false);
+  assert(batteryIsOk(25, 70, 0.7) == true);
+  assert(batteryIsOk(50, 85, 0) == false);
 }
