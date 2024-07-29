@@ -6,6 +6,7 @@
 #include "TemperatureCheck.hpp"
 #include "SocCheck.hpp"
 #include "ChargeRateCheck.hpp"
+#include <string>
 
 class Battery {
     float temperature;
