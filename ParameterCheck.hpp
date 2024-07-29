@@ -2,6 +2,7 @@
 #define PARAMETER_CHECK_HPP
 
 #include "BatteryCheck.hpp"
+#include <string>
 
 class ParameterCheck {
 public:
