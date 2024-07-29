@@ -1,4 +1,5 @@
 #include "Battery.hpp"
+#include <string>
 #include <iostream>
 
 Battery::Battery(float temp, float stateOfCharge, float charge, std::vector<ParameterCheck*> checkArray)
