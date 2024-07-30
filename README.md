@@ -28,21 +28,6 @@ Same for Temperature and Charge-rate.
 
 Keep in mind: Though we are starting with warning levels for all parameters, customers may give feedback to have warnings only for _some_ parameters and not others. Minimize the change needed for such 'tuning'.
 
-### Extension 2: Support a language in addition to English
-
-Our market has expanded to German-speaking countries!
-Switch the language of the printed messages based on a global variable.
-
-Use [Google translate](https://translate.google.com/?sl=en&tl=de&op=translate)
-if you aren't familiar with German.
-
-Keep in mind: We could add more languages in future. Minimize the code-change required.
-
-## The starting point
-
-Write a failing test. The asserts will specify the data-design (inputs and outputs). Imagine a consumer and ensure that the asserts reflect the consumer's need.
-
-Experience the places where test / code gets more complex. Think of refactoring opportunities.
 
 ## Recommended Approach
 
