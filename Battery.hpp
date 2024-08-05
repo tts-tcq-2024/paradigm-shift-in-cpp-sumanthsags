@@ -16,7 +16,7 @@ class Battery {
     std::vector<ParameterCheck*> checks;
 public:
     Battery(float temp, float stateOfCharge, float charge, std::vector<ParameterCheck*> checkArray);
-    bool checkBatteryParameter(BatteryCheck* check, double value, std::vector<std::string>& messages, int& warnings, int& breaches);
+    bool checkBatteryParameter(std::vector<ParameterCheck*> check,double value, std::vector<std::string>& messages, int& warnings, int& breaches);
     bool isBatteryOk(std::vector<std::string>& messages);
 };
 
