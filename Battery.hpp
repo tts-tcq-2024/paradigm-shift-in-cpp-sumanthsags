@@ -6,6 +6,7 @@
 #include "TemperatureCheck.hpp"
 #include "SocCheck.hpp"
 #include "ChargeRateCheck.hpp"
+#include "BatteryCheck.hpp"
 #include <string>
 
 class Battery {
