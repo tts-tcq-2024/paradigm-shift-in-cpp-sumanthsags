@@ -1,7 +1,8 @@
 #ifndef BATTERY_CHECK_HPP
 #define BATTERY_CHECK_HPP
 
-enum BatteryStatus {
+enum BatteryStatus 
+{
     NORMAL,
     LOW_SOC_BREACH,
     LOW_SOC_WARNING,
@@ -9,6 +10,8 @@ enum BatteryStatus {
     HIGH_SOC_BREACH,
     LOW_TEMP_BREACH,
     HIGH_TEMP_BREACH,
+    LOW_TEMP_WARNING,
+    HIGH_TEMP_WARNING,
     CHARGE_RATE_BREACH
 };
 
