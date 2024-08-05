@@ -5,7 +5,7 @@
 Battery::Battery(float temp, float stateOfCharge, float charge, std::vector<ParameterCheck*> checkArray)
     : temperature(temp), soc(stateOfCharge), chargeRate(charge), checks(checkArray) {}
 
-bool Battery::checkBatteryParameter(BatteryCheck* check, double value, std::vector<std::string>& messages, int& warnings, int& breaches)
+bool Battery::checkBatteryParameter(std::vector<ParameterCheck*> check, double value, std::vector<std::string>& messages, int& warnings, int& breaches)
 {
     BatteryStatus status = check->check(value);
     if (status != NORMAL) 
