@@ -5,37 +5,42 @@
 Battery::Battery(float temp, float stateOfCharge, float charge, std::vector<ParameterCheck*> checkArray)
     : temperature(temp), soc(stateOfCharge), chargeRate(charge), checks(checkArray) {}
 
-bool Battery::checkBatteryParameter(std::vector<ParameterCheck*> check, double value, std::vector<std::string>& messages, int& warnings, int& breaches)
-{
-    BatteryStatus status = check->check(value);
-    if (status != NORMAL) 
-    {
-        messages.push_back(check->message(status));
-        if (status == LOW_TEMP_BREACH || status == HIGH_TEMP_BREACH || status == LOW_SOC_BREACH || status == HIGH_SOC_BREACH || status == CHARGE_RATE_BREACH) 
-        {
-            breaches++;
-        } 
-        else 
-        {
-            warnings++;
-        }
-    }
-    return (status == NORMAL);
-}
-
 bool Battery::isBatteryOk(std::vector<std::string>& messages) 
 {
     int warnings = 0;
     int breaches = 0;
-
+ 
     // Check temperature
-    bool tempOk = checkBatteryParameter(checks[0], temperature, messages, warnings, breaches);
-
+    BatteryStatus tempStatus = checks[0]->check(temperature);
+    if (tempStatus != NORMAL) 
+    {
+        messages.push_back(checks[0]->message(tempStatus));
+        if (tempStatus == LOW_TEMP_BREACH || tempStatus == HIGH_TEMP_BREACH) {
+            breaches++;
+        } else {
+            warnings++;
+        }
+    }
+ 
     // Check SOC
-    bool socOk = checkBatteryParameter(checks[1], soc, messages, warnings, breaches);
-
+    BatteryStatus socStatus = checks[1]->check(soc);
+    if (socStatus != NORMAL) {
+        messages.push_back(checks[1]->message(socStatus));
+        if (socStatus == LOW_SOC_BREACH || socStatus == HIGH_SOC_BREACH) {
+            breaches++;
+        } else {
+            warnings++;
+        }
+    }
+ 
     // Check charge rate
-    bool chargeRateOk = checkBatteryParameter(checks[2], chargeRate, messages, warnings, breaches);
-
+    BatteryStatus chargeRateStatus = checks[2]->check(chargeRate);
+    if (chargeRateStatus != NORMAL) {
+        messages.push_back(checks[2]->message(chargeRateStatus));
+        if (chargeRateStatus == CHARGE_RATE_BREACH) {
+            breaches++;
+        }
+    }
+ 
     return (breaches == 0);
 }
