@@ -6,12 +6,19 @@
 #include "SocCheck.hpp"
 #include "ChargeRateCheck.hpp"
 
-int main() {
+// Function to initialize the checks
+std::vector<ParameterCheck*> initializeChecks() 
+{
     std::vector<ParameterCheck*> checks;
     checks.push_back(new TemperatureCheck());
     checks.push_back(new SocCheck());
     checks.push_back(new ChargeRateCheck());
+    return checks;
+}
 
+// Function to test batteries and collect results
+void testBatteries(const std::vector<ParameterCheck*>& checks) 
+{
     Battery battery1(25, 70, 0.7, checks);
     Battery battery2(50, 85, 0, checks);
 
@@ -33,10 +40,21 @@ int main() {
 
     assert(battery1_ok == true);
     assert(battery2_ok == false);
+}
 
-    for (auto check : checks) {
+// Function to clean up the checks
+void cleanupChecks(std::vector<ParameterCheck*>& checks) 
+{
+    for (auto check : checks) 
+    {
         delete check;
     }
+}
 
+int main() 
+{
+    std::vector<ParameterCheck*> checks = initializeChecks();
+    testBatteries(checks);
+    cleanupChecks(checks);
     return 0;
 }
