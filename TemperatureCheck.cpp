@@ -1,24 +1,48 @@
 #include "TemperatureCheck.hpp"
 
-TemperatureCheck::TemperatureCheck() {
-    ranges.push_back({-100, 0, LOW_TEMP_BREACH});
-    ranges.push_back({0, 45, NORMAL});
-    ranges.push_back({45, 100, HIGH_TEMP_BREACH});
+TemperatureCheck::TemperatureCheck() 
+{
+    // Define thresholds and their corresponding statuses
+    tempThresholds[-100] = LOW_TEMP_BREACH;
+    tempThresholds[-95] = LOW_TEMP_WARNING;
+    tempThresholds[45] = HIGH_TEMP_BREACH;
+    tempThresholds[42.75] = HIGH_TEMP_WARNING;
+    tempThresholds[0] = NORMAL;
+    tempThresholds[100] = HIGH_TEMP_BREACH; // Adjusted to cover the upper range
+
+    // Define status messages
+    statusMessages = 
+    {
+        { LOW_TEMP_BREACH, "Temperature is too low!" },
+        { LOW_TEMP_WARNING, "Temperature is approaching too low!" },
+        { NORMAL, "Temperature is normal" },
+        { HIGH_TEMP_WARNING, "Temperature is approaching too high!" },
+        { HIGH_TEMP_BREACH, "Temperature is too high!" }
+    };
 }
 
-BatteryStatus TemperatureCheck::check(float value) {
-    for (const auto& range : ranges) {
-        if (value >= range.lower && value <= range.upper) {
-            return range.status;
+BatteryStatus TemperatureCheck::check(float value) 
+{
+    // Iterate over the thresholds to find the corresponding status
+    BatteryStatus lastStatus = NORMAL;
+    for (const auto& threshold : tempThresholds) 
+    {
+        if (value <= threshold.first) 
+        {
+            return threshold.second;
         }
+        lastStatus = threshold.second;
     }
-    return NORMAL;
+    return lastStatus;
 }
 
-std::string TemperatureCheck::message(BatteryStatus status) {
-    switch (status) {
-        case LOW_TEMP_BREACH: return "Temperature is too low!";
-        case HIGH_TEMP_BREACH: return "Temperature is too high!";
-        default: return "";
+std::string TemperatureCheck::message(BatteryStatus status) 
+{
+    // Find and return the corresponding message
+    auto it = statusMessages.find(status);
+    if (it != statusMessages.end()) 
+    {
+        return it->second;
     }
+    return "Unknown status";
 }
