@@ -8,6 +8,8 @@
 #include "ChargeRateCheck.hpp"
 #include <string>
 
+bool checkBatteryParameter(BatteryCheck* check, double value, std::vector<std::string>& messages, int& warnings, int& breaches);
+
 class Battery {
     float temperature;
     float soc;
