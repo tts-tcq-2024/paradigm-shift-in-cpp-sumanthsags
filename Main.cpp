@@ -16,7 +16,16 @@ std::vector<ParameterCheck*> initializeChecks()
     return checks;
 }
 
-// Function to test batteries and collect results
+// Helper function to print results
+void printBatteryResults(const std::string& label, bool batteryOk, const std::vector<std::string>& messages) 
+{
+    std::cout << "Checking " << label << ": " << (batteryOk ? "PASSED" : "FAILED") << std::endl;
+    for (const std::string& message : messages) 
+    {
+        std::cout << message << std::endl;
+    }
+}
+
 void testBatteries(const std::vector<ParameterCheck*>& checks) 
 {
     Battery battery1(25, 70, 0.7, checks);
@@ -28,15 +37,8 @@ void testBatteries(const std::vector<ParameterCheck*>& checks)
     bool battery1_ok = battery1.isBatteryOk(messages1);
     bool battery2_ok = battery2.isBatteryOk(messages2);
 
-    std::cout << "Checking battery1: " << (battery1_ok ? "PASSED" : "FAILED") << std::endl;
-    for (const std::string& message : messages1) {
-        std::cout << message << std::endl;
-    }
-
-    std::cout << "Checking battery2: " << (battery2_ok ? "PASSED" : "FAILED") << std::endl;
-    for (const std::string& message : messages2) {
-        std::cout << message << std::endl;
-    }
+    printBatteryResults("battery1", battery1_ok, messages1);
+    printBatteryResults("battery2", battery2_ok, messages2);
 
     assert(battery1_ok == true);
     assert(battery2_ok == false);
