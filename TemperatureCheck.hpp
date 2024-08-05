@@ -2,11 +2,13 @@
 #define TEMPERATURE_CHECK_HPP
 
 #include "ParameterCheck.hpp"
-#include "Range.hpp"
-#include <vector>
+#include <map>
+#include <string>
 
-class TemperatureCheck : public ParameterCheck {
-    std::vector<Range> ranges;
+class TemperatureCheck : public ParameterCheck 
+{
+    std::map<float, BatteryStatus> tempThresholds;
+    std::map<BatteryStatus, std::string> statusMessages;
 public:
     TemperatureCheck();
     BatteryStatus check(float value) override;
