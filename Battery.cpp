@@ -1,46 +1,54 @@
 #include "Battery.hpp"
-#include <string>
 #include <iostream>
+#include <string>
+#include <unordered_map>
+#include <functional>
 
+// Constructor remains unchanged
 Battery::Battery(float temp, float stateOfCharge, float charge, std::vector<ParameterCheck*> checkArray)
     : temperature(temp), soc(stateOfCharge), chargeRate(charge), checks(checkArray) {}
+
+// Define actions for each status
+void processStatus(BatteryStatus status, int& warnings, int& breaches) 
+{
+    static const std::unordered_map<BatteryStatus, std::function<void()>> statusActions = {
+        {LOW_TEMP_BREACH, [&]() { breaches++; }},
+        {HIGH_TEMP_BREACH, [&]() { breaches++; }},
+        {LOW_SOC_BREACH, [&]() { breaches++; }},
+        {HIGH_SOC_BREACH, [&]() { breaches++; }},
+        {CHARGE_RATE_BREACH, [&]() { breaches++; }}
+    };
+
+    // Default action for warnings
+    if (statusActions.find(status) != statusActions.end()) 
+    {
+        statusActions.at(status)();
+    } 
+    else 
+    {
+        warnings++;
+    }
+}
+
+void processParameterCheck(ParameterCheck* check, float value, std::vector<std::string>& messages, int& warnings, int& breaches) 
+{
+    BatteryStatus status = check->check(value);
+    if (status != NORMAL) 
+    {
+        messages.push_back(check->message(status));
+        processStatus(status, warnings, breaches);
+    }
+}
 
 bool Battery::isBatteryOk(std::vector<std::string>& messages) 
 {
     int warnings = 0;
     int breaches = 0;
  
-    // Check temperature
-    BatteryStatus tempStatus = checks[0]->check(temperature);
-    if (tempStatus != NORMAL) 
-    {
-        messages.push_back(checks[0]->message(tempStatus));
-        if (tempStatus == LOW_TEMP_BREACH || tempStatus == HIGH_TEMP_BREACH) {
-            breaches++;
-        } else {
-            warnings++;
-        }
-    }
- 
-    // Check SOC
-    BatteryStatus socStatus = checks[1]->check(soc);
-    if (socStatus != NORMAL) {
-        messages.push_back(checks[1]->message(socStatus));
-        if (socStatus == LOW_SOC_BREACH || socStatus == HIGH_SOC_BREACH) {
-            breaches++;
-        } else {
-            warnings++;
-        }
-    }
- 
-    // Check charge rate
-    BatteryStatus chargeRateStatus = checks[2]->check(chargeRate);
-    if (chargeRateStatus != NORMAL) {
-        messages.push_back(checks[2]->message(chargeRateStatus));
-        if (chargeRateStatus == CHARGE_RATE_BREACH) {
-            breaches++;
-        }
-    }
- 
+    // Process each check
+    processParameterCheck(checks[0], temperature, messages, warnings, breaches);  // Temperature check
+    processParameterCheck(checks[1], soc, messages, warnings, breaches);         // SOC check
+    processParameterCheck(checks[2], chargeRate, messages, warnings, breaches);  // Charge rate check
+
     return (breaches == 0);
 }
