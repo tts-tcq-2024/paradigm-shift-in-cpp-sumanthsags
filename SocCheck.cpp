@@ -2,11 +2,11 @@
 
 SocCheck::SocCheck() 
 {
-    ranges.push_back({0, 20, LOW_SOC_BREACH});
-    ranges.push_back({21, 24, LOW_SOC_WARNING});
-    ranges.push_back({24, 75, NORMAL});
-    ranges.push_back({76, 80, HIGH_SOC_WARNING});
-    ranges.push_back({81, 100, HIGH_SOC_BREACH});
+    socThresholds[20] = LOW_SOC_BREACH;
+    socThresholds[24] = LOW_SOC_WARNING;
+    socThresholds[75] = NORMAL;
+    socThresholds[80] = HIGH_SOC_WARNING;
+    socThresholds[100] = HIGH_SOC_BREACH;
 
     statusMessages = 
     {
@@ -19,11 +19,11 @@ SocCheck::SocCheck()
 
 BatteryStatus SocCheck::check(float value) 
 {
-    for (const auto& range : ranges) 
+    for (const auto& threshold : socThresholds) 
     {
-        if (value >= range.lower && value <= range.upper) 
+        if (value <= threshold.first) 
         {
-            return range.status;
+            return threshold.second;
         }
     }
     return NORMAL;
